@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using netCoreAPI.Services;
 
 namespace netCoreAPI
@@ -25,7 +26,7 @@ namespace netCoreAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        //register connection string here
+        //register connection string here from the App.Json
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TodoContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
@@ -41,6 +42,13 @@ namespace netCoreAPI
                         .AllowAnyHeader()
                         .AllowCredentials();
                     });
+            });
+
+
+            //swagger will generate a JSON document for each of our endpoints.
+            services.AddSwaggerGen( d=>
+            {
+                d.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo Api", Version = "v1" });
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -61,6 +69,13 @@ namespace netCoreAPI
 
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1");
+                c.RoutePrefix = string.Empty;
+            });
+
             app.UseMvc();
         }
     }
