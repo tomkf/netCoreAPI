@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,8 +51,13 @@ namespace netCoreAPI
             services.AddSwaggerGen( d=>
             {
                 d.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo Api", Version = "v1" });
-            });
 
+                // Set the comments path for the Swagger Doc JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                d.IncludeXmlComments(xmlPath);
+            });
+        
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
