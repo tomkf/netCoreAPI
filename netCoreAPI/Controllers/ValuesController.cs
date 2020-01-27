@@ -25,46 +25,57 @@ namespace netCoreAPI.Controllers
             return "value";
         }
 
-        // POST api/values
-        [HttpPost]
-        public IActionResult Create([FromBody]ToDo todo)
-        {
-            if (todo.Description == null || todo.Description == "")
-            {
-                return BadRequest();
-            }
-            _context.ToDos.Add(todo);
-            _context.SaveChanges();
-            return new ObjectResult(todo);
-        }
 
 
-        // PUT api/values/5
-        [HttpGet("{id}", Name = "GetTodo")]
-        public IActionResult GetById(long id)
-        {
-            var item = _context.ToDos.FirstOrDefault(t => t.Id == id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            return new ObjectResult(item);
-        }
+        /*  // POST api/values
+          [HttpPost]
+          public IActionResult Create([FromBody]ToDo todo)
+          {
+              if (todo.Description == null || todo.Description == "")
+              {
+                  return BadRequest();
+              }
+              _context.ToDos.Add(todo);
+              _context.SaveChanges();
+              return new ObjectResult(todo);
+          }
+  */
+        /*
+                // PUT api/values/5
+                [HttpGet("{id}", Name = "GetTodo")]
+                public IActionResult GetById(long id)
+                {
+                    var item = _context.ToDos.FirstOrDefault(t => t.Id == id);
+                    if (item == null)
+                    {
+                        return NotFound();
+                    }
+                    return new ObjectResult(item);
+                }*/
+
+        /*
+         * 
+         * /// <summary>
+        /// Deletes a specific Project.
+        /// </summary> 
+        /// <param name="id"></param>
+        /// 
+                // DELETE api/values/5
+                [HttpDelete]
+                [Route("MyDelete")] // Custom route
+                public IActionResult MyDelete(long Id)
+                {
+                    var item = _context.ToDos.Where(t => t.Id == Id).FirstOrDefault();
+                    if (item == null)
+                    {
+                        return NotFound();
+                    }
+                    _context.ToDos.Remove(item);
+                    _context.SaveChanges();
+                    return new ObjectResult(item);
+                }*/
 
 
-        // DELETE api/values/5
-        [HttpDelete]
-        [Route("MyDelete")] // Custom route
-        public IActionResult MyDelete(long Id)
-        {
-            var item = _context.ToDos.Where(t => t.Id == Id).FirstOrDefault();
-            if (item == null)
-            {
-                return NotFound();
-            }
-            _context.ToDos.Remove(item);
-            _context.SaveChanges();
-            return new ObjectResult(item);
-        }
+
     }
 }

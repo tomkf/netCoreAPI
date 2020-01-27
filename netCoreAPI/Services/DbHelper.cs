@@ -6,6 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
+//add new context, add new model here 
+//run new migration, will read context, which reference model, define that model should be table in database, will be created inside migrations folder
+
+
 namespace netCoreAPI.Services
 {
     public class ToDo
