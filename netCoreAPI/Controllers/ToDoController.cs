@@ -18,6 +18,7 @@ namespace netCoreAPI.Controllers
             _context = context;
         }
 
+
         //when todo hit, this method fired
         [HttpGet]
         public IEnumerable<ToDo> GetAll()
@@ -25,20 +26,46 @@ namespace netCoreAPI.Controllers
             return _context.ToDos.ToList();
         }
 
-        [HttpGet("id", Name = "GetTodo")]
+
+        [HttpGet("{id}", Name = "GetTodo")]
+        public IActionResult GetById(long id)
         {
-            public IActionResult GetbyId(long id)
-        {
-            return new ObjectResult();
+            var item = _context.ToDos.FirstOrDefault(t => t.Id == id);
+            if (item == null)
             {
-                var item = _context.ToDos.FirstOrDefault(t => t.Id == id);
-                if (item == null)
-                {
-                    return NotFound();
-                }
-                return new ObjectResult(item);
+                return NotFound();
             }
+            return new ObjectResult(item);
         }
+
+        [HttpPost]
+        public IActionResult Create([FromBody]ToDo todo)
+        {
+            if (todo.Description == null || todo.Description == "")
+            {
+                return BadRequest();
+            }
+            _context.ToDos.Add(todo);
+            _context.SaveChanges();
+            return new ObjectResult(todo);
         }
+
+        [HttpPut]
+        [Route("MyEdit")] // Custom route
+        public IActionResult GetByParams([FromBody]ToDo todo)
+        {
+            var item = _context.ToDos.Where(t => t.Id == todo.Id).FirstOrDefault();
+            if (item == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                item.IsComplete = todo.IsComplete;
+                _context.SaveChanges();
+            }
+            return new ObjectResult(item);
+        }
+
     }
 }
