@@ -14,6 +14,9 @@ namespace netCoreAPI.Services
         public int Id { get; set; }
         public string Description { get; set; }
         public bool IsComplete { get; set; }
+        public int Priority { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
     public class TodoContext : DbContext
     {
@@ -28,8 +31,8 @@ namespace netCoreAPI.Services
         {
             //when model is created, these items will be added to SQLite DB
             modelBuilder.Entity<ToDo>().HasData(
-                new { Id = 1, Description = "Clean house", IsComplete = false },
-                new { Id = 2, Description = "Bake cake", IsComplete = false }
+                new { Id = 1, Description = "Clean house", IsComplete = false, Priority = 1, CreatedOn = DateTime.Now},
+                new { Id = 2, Description = "Bake cake", IsComplete = false, Priority = 3, CreatedOn = DateTime.Now }
             );
         }
     }
